@@ -6,7 +6,6 @@ import re
 from openpyxl import Workbook
 from openpyxl.styles import PatternFill
 
-
 # 초기 상태 설정
 if 'username' not in st.session_state:
     st.session_state['username'] = ''
@@ -113,10 +112,13 @@ if st.session_state['username'] != '' and st.session_state['time_unit']:
 
         # 데이터 추가
         for i, time in enumerate(time_slots):
+            # 시간을 가장 왼쪽 열에 추가
+            sheet.cell(row=i + 2, column=1).value = time
+
             for day_index, day in enumerate(days_of_week):
                 cell_value = st.session_state['weekly_plan'][day][i]
                 clean_text = strip_html(cell_value)
-                cell = sheet.cell(row=i + 2, column=day_index + 2)
+                cell = sheet.cell(row=i + 2, column=day_index + 2)  # 요일 열은 두번째부터 시작
                 cell.value = clean_text
 
                 # HTML 코드에서 색상 정보를 추출하여 셀 색상 지정
